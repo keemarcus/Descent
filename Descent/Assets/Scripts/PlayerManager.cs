@@ -21,31 +21,43 @@ public class PlayerManager : CharacterManager
         inputHandler.TickInput(Time.deltaTime);
 
         // update animator
+        animator.SetBool("Grounded", isGrounded);
+        animator.SetBool("Falling", isFalling);
+
         float movement = body.velocity.x;
-        if(movement == 0f)
+        if (movement == 0f)
         {
-            animator.SetBool("Moving", false);
+            animator.SetBool("Running", false);
         }
         else
         {
-            if (inputHandler.rightInput)
-            {
-                if (!facingRight)
-                {
-                    animator.SetTrigger("Turn");
-                    facingRight = true;
-                }
-            }
-            else if(inputHandler.leftInput)
-            {
-                if (facingRight)
-                {
-                    animator.SetTrigger("Turn");
-                    facingRight = false;
-                }
-            }
             animator.SetFloat("X", movement);
-            animator.SetBool("Moving", true);
+            animator.SetBool("Running", true);
+        }
+
+        if (inputHandler.rightInput)
+        {
+            if (!facingRight)
+            {
+                if (isGrounded)
+                {
+                    animator.SetTrigger("Turn");
+                }
+             
+                facingRight = true;
+            }
+        }
+        else if (inputHandler.leftInput)
+        {
+            if (facingRight)
+            {
+                if (isGrounded)
+                {
+                    animator.SetTrigger("Turn");
+                }
+
+                facingRight = false;
+            }
         }
 
         base.Update();
@@ -73,5 +85,10 @@ public class PlayerManager : CharacterManager
                 this.isDead = true;
             }
         }
+    }
+
+    public void PlayJumpAnimation()
+    {
+        animator.SetTrigger("Jump");
     }
 }

@@ -39,6 +39,7 @@ public class PlayerLocomotion : MonoBehaviour
     {
         if (playerManager.isDead) { return; }
 
+        playerManager.PlayJumpAnimation();
         float jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * playerManager.body.gravityScale));
         playerManager.body.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);        
     }

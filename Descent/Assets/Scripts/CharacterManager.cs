@@ -66,7 +66,7 @@ public class CharacterManager : MonoBehaviour
 
     private bool HandleFallingDetection()
     {
-        if(isGrounded || body.velocity.y >= 0) { return false; }
+        if(isGrounded || Mathf.Abs(body.velocity.y) < .01f) { return false; }
         else
         {
             groundedTimer = groundedTime;
