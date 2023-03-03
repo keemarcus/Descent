@@ -50,7 +50,7 @@ public class CharacterManager : MonoBehaviour
     private bool HandleGroundedDetection(float delta)
     {
         // if we're moving in the y direction we're not grounded
-        if(body.velocity.y != 0) { return false; }
+        if(Mathf.Abs(body.velocity.y) > .01f) { return false; }
         else
         {
             // check to see if we've been on the ground long enough
@@ -66,7 +66,7 @@ public class CharacterManager : MonoBehaviour
 
     private bool HandleFallingDetection()
     {
-        if(body.velocity.y >= 0) { return false; }
+        if(isGrounded || body.velocity.y >= 0) { return false; }
         else
         {
             groundedTimer = groundedTime;

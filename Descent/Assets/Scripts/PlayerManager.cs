@@ -7,17 +7,46 @@ public class PlayerManager : CharacterManager
     InputHandler inputHandler;
     PlayerLocomotion playerLocomotion;
 
-    
+    private bool facingRight;
 
     protected override void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
+        facingRight = true;
         base.Awake();
     }
     protected override void Update()
     {
         inputHandler.TickInput(Time.deltaTime);
+
+        // update animator
+        float movement = body.velocity.x;
+        if(movement == 0f)
+        {
+            animator.SetBool("Moving", false);
+        }
+        else
+        {
+            if (inputHandler.rightInput)
+            {
+                if (!facingRight)
+                {
+                    animator.SetTrigger("Turn");
+                    facingRight = true;
+                }
+            }
+            else if(inputHandler.leftInput)
+            {
+                if (facingRight)
+                {
+                    animator.SetTrigger("Turn");
+                    facingRight = false;
+                }
+            }
+            animator.SetFloat("X", movement);
+            animator.SetBool("Moving", true);
+        }
 
         base.Update();
     }
