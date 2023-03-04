@@ -6,9 +6,8 @@ public class InputHandler : MonoBehaviour
 {
     public float horizontal;
     public float moveAmount;
-
-    public bool rightInput;
-    public bool leftInput;
+    
+    public Vector2 movement;
     public bool jumpInput;
     public bool useItemInput;
 
@@ -28,10 +27,7 @@ public class InputHandler : MonoBehaviour
         if (inputActions == null)
         {
             inputActions = new PlayerControls();
-            inputActions.PlayerMovement.Right.performed += i => rightInput = true;
-            inputActions.PlayerMovement.Right.canceled += i => rightInput = false;
-            inputActions.PlayerMovement.Left.performed += i => leftInput = true;
-            inputActions.PlayerMovement.Left.canceled += i => leftInput = false;
+            inputActions.PlayerMovement.Movement.performed += inputActions => movement = inputActions.ReadValue<Vector2>();
             inputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
             inputActions.PlayerActions.UseItem.performed += i => useItemInput = true;
         }
@@ -63,21 +59,13 @@ public class InputHandler : MonoBehaviour
             moveModifier = 0.5f;
         }
 
-        if(rightInput ^ leftInput)
+        if(Mathf.Abs(movement.x) <= .01f)
         {
-            // handle movement
-            if (rightInput)
-            {
-                horizontal = Mathf.Lerp(horizontal, 1f * moveModifier, delta * playerLocomotion.acceleration);
-            }
-            else
-            {
-                horizontal = Mathf.Lerp(horizontal, -1f * moveModifier, delta * playerLocomotion.acceleration);
-            }
+            horizontal = 0f;
         }
         else
         {
-            horizontal = 0f;
+            horizontal = Mathf.Lerp(horizontal, movement.x * moveModifier, delta * playerLocomotion.acceleration);
         }
 
         moveAmount = Mathf.Abs(horizontal);

@@ -20,43 +20,46 @@ public class PlayerManager : CharacterManager
     {
         inputHandler.TickInput(Time.deltaTime);
 
-        // update animator
-        animator.SetBool("Grounded", isGrounded);
-        animator.SetBool("Falling", isFalling);
+        if (!isInteracting)
+        {
+            // update animator
+            animator.SetBool("Grounded", isGrounded);
+            animator.SetBool("Falling", isFalling);
 
-        float movement = body.velocity.x;
-        if (movement == 0f)
-        {
-            animator.SetBool("Running", false);
-        }
-        else
-        {
-            animator.SetFloat("X", movement);
-            animator.SetBool("Running", true);
-        }
-
-        if (inputHandler.rightInput)
-        {
-            if (!facingRight)
+            float movement = body.velocity.x;
+            if (movement == 0f)
             {
-                if (isGrounded)
-                {
-                    animator.SetTrigger("Turn");
-                }
-             
-                facingRight = true;
+                animator.SetBool("Running", false);
             }
-        }
-        else if (inputHandler.leftInput)
-        {
-            if (facingRight)
+            else
             {
-                if (isGrounded)
-                {
-                    animator.SetTrigger("Turn");
-                }
+                animator.SetFloat("X", movement);
+                animator.SetBool("Running", true);
+            }
 
-                facingRight = false;
+            if (inputHandler.horizontal > .01f)
+            {
+                if (!facingRight)
+                {
+                    if (isGrounded)
+                    {
+                        animator.SetTrigger("Turn");
+                    }
+
+                    facingRight = true;
+                }
+            }
+            else if (inputHandler.horizontal < -.01f)
+            {
+                if (facingRight)
+                {
+                    if (isGrounded)
+                    {
+                        animator.SetTrigger("Turn");
+                    }
+
+                    facingRight = false;
+                }
             }
         }
 

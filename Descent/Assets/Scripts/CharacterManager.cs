@@ -7,6 +7,7 @@ public class CharacterManager : MonoBehaviour
     protected Animator animator;
     public Rigidbody2D body;
     public bool isDead;
+    public bool isInteracting;
 
     public Item heldItem;
     public Transform heldItemTransform;
@@ -19,6 +20,7 @@ public class CharacterManager : MonoBehaviour
     protected virtual void Awake()
     {
         isDead = false;
+        isInteracting = false;
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
     }
