@@ -53,6 +53,19 @@ public class InputHandler : MonoBehaviour
     {
         if (!playerManager.isGrounded && !playerManager.isFalling) { return; }
 
+        if (playerManager.isLedgeHanging)
+        {
+            if(movement.y >= .75f)
+            {
+                playerManager.HandleLedgeClimb();
+            }else if(movement.y <= -.75f)
+            {
+                playerManager.HandleLedgeDrop();
+            }
+
+            return;
+        }
+
         float moveModifier = 1f;
         if (playerManager.isFalling)
         {

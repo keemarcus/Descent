@@ -24,9 +24,11 @@ public class PlayerLocomotion : MonoBehaviour
         
     }
 
+    
+
     public void HandleMovement(float horizontal)
     {
-        if (playerManager.isDead) 
+        if (playerManager.isDead || playerManager.isLedgeHanging) 
         {
             playerManager.body.velocity = Vector2.zero;
             return; 
@@ -37,7 +39,7 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleJump(float delta)
     {
-        if (playerManager.isDead) { return; }
+        if (playerManager.isDead || playerManager.isLedgeHanging) { return; }
 
         playerManager.PlayJumpAnimation();
         float jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * playerManager.body.gravityScale));
