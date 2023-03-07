@@ -1,56 +1,81 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class LedgeGrab : MonoBehaviour
 {
-    public List<Transform> ledgeGrabPoints;
-    private PlayerManager player;
-
-    private void Start()
+    public float grabRadius;
+    public LayerMask groundLayer;
+    PlayerManager player;
+    private bool canDetect;
+    private float dropTimer;
+    public GameObject currentLedge;
+    private void Awake()
     {
-        foreach(Transform t in this.GetComponentsInChildren<Transform>())
-        {
-            if (t.position != this.transform.position)
-            {
-                ledgeGrabPoints.Add(t);
-            }
-        }
-
-        //Debug.Log(this.transform.position);
-        //Debug.Log(this.name);
-
-        foreach(Transform ledgeGrabPoint in ledgeGrabPoints)
-        {
-            //Debug.Log("Ledge at :" + ledgeGrabPoint.localPosition);
-        }
-
-        player = FindObjectOfType<PlayerManager>();
+        player = GetComponentInParent<PlayerManager>();
+        canDetect = true;
     }
-
     void Update()
     {
-        if(player != null && PlayerInRangeToGrab(player.hangingTransform) && !player.isGrounded && !player.isInteracting)
+        if (canDetect && dropTimer <= 0f)
         {
-            //player.HandleLedgeGrab(this.transform.position);
+            player.isLedgeHanging = Physics2D.OverlapCircle(this.transform.position, grabRadius, groundLayer);
         }
-    }
-
-    private bool PlayerInRangeToGrab(Transform playerTransform)
-    {
-        bool inRange = false;
-
-        foreach(Transform ledgeGrabPoint in ledgeGrabPoints)
+        else
         {
-            //Debug.Log(Vector2.Distance(ledgeGrabPoint.position, playerTransform.position));
-            if(Vector2.Distance(ledgeGrabPoint.position, playerTransform.position) <= 1f)
+            player.isLedgeHanging = false;
+            if (dropTimer > 0f)
             {
-                inRange = true;
-                break;
+                dropTimer -= Time.deltaTime;
             }
         }
 
-        return inRange;
+        if(player.isLedgeHanging && player.isGrounded)
+        {
+            player.HandleLedgeClimb();
+        }
+    }
+
+    public void Drop()
+    {
+        dropTimer = .1f;
+    }
+
+    public void SetDirection(bool facingRight)
+    {
+        if (facingRight)
+        {
+            if(this.transform.localPosition.x < 0f)
+            {
+                this.transform.localPosition = new Vector3(this.transform.localPosition.x * -1f, this.transform.localPosition.y, 0f);
+            }
+        }
+        else
+        {
+            if (this.transform.localPosition.x > 0f)
+            {
+                this.transform.localPosition = new Vector3(this.transform.localPosition.x * -1f, this.transform.localPosition.y, 0f);
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            canDetect = false;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            canDetect = true;
+        }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(this.transform.position, grabRadius);
     }
 }

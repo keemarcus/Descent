@@ -16,6 +16,9 @@ public class CharacterManager : MonoBehaviour
     public bool isFalling;
     public float groundedTime;
     private float groundedTimer;
+    public float groundDetectionDistance;
+    public LayerMask groundLayer;
+    public Transform groundDetectionCastTransform;
 
     protected virtual void Awake()
     {
@@ -51,8 +54,8 @@ public class CharacterManager : MonoBehaviour
     #region Grounded And Falling Detection
     private bool HandleGroundedDetection(float delta)
     {
-        // if we're moving in the y direction we're not grounded
-        if(Mathf.Abs(body.velocity.y) > .01f) { return false; }
+        // check to see if character is on the ground
+        if(!Physics2D.Raycast(groundDetectionCastTransform.position, Vector2.down, groundDetectionDistance, groundLayer)) { return false; }
         else
         {
             // check to see if we've been on the ground long enough
@@ -74,6 +77,11 @@ public class CharacterManager : MonoBehaviour
             groundedTimer = groundedTime;
             return true;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawLine(groundDetectionCastTransform.position, groundDetectionCastTransform.position + (Vector3.down * groundDetectionDistance));
     }
     #endregion
 }

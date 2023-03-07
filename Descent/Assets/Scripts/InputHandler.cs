@@ -51,14 +51,14 @@ public class InputHandler : MonoBehaviour
 
     private void HandleMovementInput(float delta)
     {
-        if (!playerManager.isGrounded && !playerManager.isFalling) { return; }
+        if (!playerManager.isGrounded && !playerManager.isFalling && !playerManager.isLedgeHanging) { return; }
 
         if (playerManager.isLedgeHanging)
         {
-            if(movement.y >= .75f)
+            if(movement.y >= .75f || (movement.x >= .75f && playerManager.facingRight) || (movement.x <= -.75f && !playerManager.facingRight))
             {
                 playerManager.HandleLedgeClimb();
-            }else if(movement.y <= -.75f)
+            }else if(movement.y <= -.75f || (movement.x >= .75f && !playerManager.facingRight) || (movement.x <= -.75f && playerManager.facingRight))
             {
                 playerManager.HandleLedgeDrop();
             }

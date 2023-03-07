@@ -7,9 +7,10 @@ public class PlayerManager : CharacterManager
     InputHandler inputHandler;
     PlayerLocomotion playerLocomotion;
     public Transform hangingTransform;
-    NewLedgeGrab ledgeGrab;
+    LedgeGrab ledgeGrab;
+    public bool canClimb;
 
-    private bool facingRight;
+    public bool facingRight;
 
     public bool isLedgeHanging;
 
@@ -20,9 +21,10 @@ public class PlayerManager : CharacterManager
     {
         inputHandler = GetComponent<InputHandler>();
         playerLocomotion = GetComponent<PlayerLocomotion>();
-        ledgeGrab = GetComponentInChildren<NewLedgeGrab>();
+        ledgeGrab = GetComponentInChildren<LedgeGrab>();
         facingRight = false;
         isLedgeHanging = false;
+        canClimb = false;
         base.Awake();
     }
     protected override void Update()
@@ -125,10 +127,16 @@ public class PlayerManager : CharacterManager
         animator.SetTrigger("Jump");
     }
 
+    public void SetCanClimb()
+    {
+        canClimb = true;
+    }
     public void HandleLedgeClimb()
     {
-        Debug.Log("Ledge Climb");
+        if (!canClimb) { return; }
+        //Debug.Log("Ledge Climb");
         isLedgeHanging = false;
+        canClimb = false;
         body.bodyType = RigidbodyType2D.Static;
         this.transform.position = (this.transform.position + ledgeGrab.transform.localPosition);
         animator.SetBool("Climb Up", true);
@@ -149,7 +157,7 @@ public class PlayerManager : CharacterManager
     }
     public void HandleLedgeDrop()
     {
-        Debug.Log("Ledge Drop");
+        //Debug.Log("Ledge Drop");
         isLedgeHanging = false;
         animator.SetBool("Climb Up", false);
         animator.SetBool("Wall Hang", isLedgeHanging);
