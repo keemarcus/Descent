@@ -87,7 +87,7 @@ public class InputHandler : MonoBehaviour
 
     private void HandleJumpInput(float delta)
     {
-        if (!playerManager.isGrounded) { return; }
+        if (!playerManager.isGrounded || playerManager.isInteracting) { return; }
 
         if (jumpInput)
         {

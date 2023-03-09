@@ -54,10 +54,10 @@ public class CharacterManager : MonoBehaviour
     }
     public bool HandleDirection()
     {
-        if(body.velocity.x > 0f)
+        if(body.velocity.x > .01f)
         {
             return true;
-        }else if(body.velocity.x < 0f)
+        }else if(body.velocity.x < -.01f)
         {
             return false;
         }
@@ -82,6 +82,9 @@ public class CharacterManager : MonoBehaviour
         if (!Physics2D.BoxCast(groundDetectionCastTransform.position + (Vector3.down * groundDetectionDistance), new Vector3(this.GetComponent<BoxCollider2D>().size.x - .01f, 0.01f, 0f), 0f, Vector2.down, 0.01f, groundLayer)) { return false; }
         else
         {
+            // make sure character has the right rigidbody type
+            if(!isInteracting && !isLedgeHanging && body.bodyType != RigidbodyType2D.Dynamic) { body.bodyType = RigidbodyType2D.Dynamic; }
+
             // check to see if we've been on the ground long enough
             if (groundedTimer <= 0f) { return true; }
             else

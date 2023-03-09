@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerManager : CharacterManager
 {
     InputHandler inputHandler;
-    public Transform hangingTransform;
     LedgeGrab ledgeGrab;
 
     public Vector3 ledgeClimbPositionOffset;
@@ -103,17 +102,17 @@ public class PlayerManager : CharacterManager
     public void SetCanClimb()
     {
         canClimb = true;
+        if (!isLedgeHanging) { isLedgeHanging = true; }
     }
     public void HandleLedgeClimb()
     {
         if (!canClimb) { return; }
-        //Debug.Log("Ledge Climb");
         isLedgeHanging = false;
         canClimb = false;
         body.bodyType = RigidbodyType2D.Static;
         this.transform.position = (this.transform.position + ledgeGrab.transform.localPosition);
         animator.SetBool("Climb Up", true);
-        animator.SetBool("Wall Hang", isLedgeHanging);
+        animator.SetBool("Wall Hang", false);
         ledgeGrab.Drop();
     }
 
@@ -130,10 +129,9 @@ public class PlayerManager : CharacterManager
     }
     public void HandleLedgeDrop()
     {
-        //Debug.Log("Ledge Drop");
         isLedgeHanging = false;
         animator.SetBool("Climb Up", false);
-        animator.SetBool("Wall Hang", isLedgeHanging);
+        animator.SetBool("Wall Hang", false);
         ledgeGrab.Drop();
     }
 }

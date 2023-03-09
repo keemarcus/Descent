@@ -9,8 +9,8 @@ public class LedgeGrab : MonoBehaviour
     public LayerMask groundLayer;
 
     private PlayerManager player;
-    private bool canDetect;
-    private float dropTimer;
+    public bool canDetect;
+    public float dropTimer;
     private GameObject currentLedge;
 
     private void Awake()
@@ -41,6 +41,7 @@ public class LedgeGrab : MonoBehaviour
 
     public void Drop()
     {
+        player.canClimb = false;
         dropTimer = .1f;
     }
 
