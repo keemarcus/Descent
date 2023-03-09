@@ -951,13 +951,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 0}
-  isDead: 0
-  isInteracting: 0
   heldItem: {fileID: 0}
   heldItemTransform: {fileID: 1389666173}
+  isDead: 0
+  isInteracting: 0
   isGrounded: 0
   isFalling: 0
-  groundedTime: 0
+  canClimb: 0
+  facingRight: 0
+  isLedgeHanging: 0
   groundDetectionDistance: 0
   groundLayer:
     serializedVersion: 2
@@ -1419,7 +1421,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 1
   m_UsedByComposite: 0
-  m_Offset: {x: -0.033179045, y: -0.24963689}
+  m_Offset: {x: 0, y: -0.24963689}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -1554,22 +1556,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 0}
-  isDead: 0
-  isInteracting: 0
   heldItem: {fileID: 0}
   heldItemTransform: {fileID: 1995870525}
+  isDead: 0
+  isInteracting: 0
   isGrounded: 0
   isFalling: 0
-  groundedTime: 0.01
-  groundDetectionDistance: 1.05
+  canClimb: 0
+  facingRight: 0
+  isLedgeHanging: 0
+  groundDetectionDistance: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
   groundDetectionCastTransform: {fileID: 381742032}
   hangingTransform: {fileID: 1991746192}
-  canClimb: 0
-  facingRight: 0
-  isLedgeHanging: 0
   ledgeClimbPositionOffset: {x: 0.4, y: 1, z: 0}
 --- !u!251 &1080443382
 PlatformEffector2D:
@@ -1898,13 +1899,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   body: {fileID: 0}
-  isDead: 0
-  isInteracting: 0
   heldItem: {fileID: 0}
   heldItemTransform: {fileID: 696294558}
+  isDead: 0
+  isInteracting: 0
   isGrounded: 0
   isFalling: 0
-  groundedTime: 0
+  canClimb: 0
+  facingRight: 0
+  isLedgeHanging: 0
   groundDetectionDistance: 0
   groundLayer:
     serializedVersion: 2
@@ -2151,7 +2154,6 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1024
-  currentLedge: {fileID: 0}
 --- !u!61 &1584213301
 BoxCollider2D:
   m_ObjectHideFlags: 0

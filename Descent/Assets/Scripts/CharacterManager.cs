@@ -4,26 +4,35 @@ using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
 {
-    protected Animator animator;
+    [Header("Character Components")]
     public Rigidbody2D body;
-    public bool isDead;
-    public bool isInteracting;
-
     public Item heldItem;
     public Transform heldItemTransform;
+    protected Animator animator;
 
+    [Header("Character State Bools")]
+    public bool isDead;
+    public bool isInteracting;
     public bool isGrounded;
     public bool isFalling;
-    public float groundedTime;
-    private float groundedTimer;
+    public bool canClimb;
+    public bool facingRight;
+    public bool isLedgeHanging;
+
+    [Header("Grounded Detection")]
     public float groundDetectionDistance;
     public LayerMask groundLayer;
     public Transform groundDetectionCastTransform;
+    private float groundedTime;
+    private float groundedTimer;
 
     protected virtual void Awake()
     {
         isDead = false;
         isInteracting = false;
+        facingRight = false;
+        isLedgeHanging = false;
+        canClimb = false;
         animator = GetComponent<Animator>();
         body = GetComponent<Rigidbody2D>();
     }
@@ -32,6 +41,7 @@ public class CharacterManager : MonoBehaviour
     {
         isFalling = HandleFallingDetection();
         isGrounded = HandleGroundedDetection(Time.deltaTime);
+        facingRight = HandleDirection();
 
         // check to see if the character fell off the map
         if(isFalling && this.transform.position.y <= -2f)
@@ -41,6 +51,20 @@ public class CharacterManager : MonoBehaviour
 
         // update animator variables
         animator.SetBool("Is Dead", isDead);
+    }
+    public bool HandleDirection()
+    {
+        if(body.velocity.x > 0f)
+        {
+            return true;
+        }else if(body.velocity.x < 0f)
+        {
+            return false;
+        }
+        else
+        {
+            return facingRight;
+        }
     }
     public virtual void DestroyAnimationEvent()
     {
@@ -55,7 +79,7 @@ public class CharacterManager : MonoBehaviour
     private bool HandleGroundedDetection(float delta)
     {
         // check to see if character is on the ground
-        if(!Physics2D.Raycast(groundDetectionCastTransform.position, Vector2.down, groundDetectionDistance, groundLayer)) { return false; }
+        if (!Physics2D.BoxCast(groundDetectionCastTransform.position + (Vector3.down * groundDetectionDistance), new Vector3(this.GetComponent<BoxCollider2D>().size.x - .01f, 0.01f, 0f), 0f, Vector2.down, 0.01f, groundLayer)) { return false; }
         else
         {
             // check to see if we've been on the ground long enough
@@ -81,7 +105,8 @@ public class CharacterManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(groundDetectionCastTransform.position, groundDetectionCastTransform.position + (Vector3.down * groundDetectionDistance));
+        // draw ground detection gizmo
+        Gizmos.DrawWireCube(groundDetectionCastTransform.position + (Vector3.down * groundDetectionDistance), new Vector3(this.GetComponent<BoxCollider2D>().size.x - .01f, 0.01f, 0f));
     }
     #endregion
 }

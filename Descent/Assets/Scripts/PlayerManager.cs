@@ -5,96 +5,26 @@ using UnityEngine;
 public class PlayerManager : CharacterManager
 {
     InputHandler inputHandler;
-    PlayerLocomotion playerLocomotion;
     public Transform hangingTransform;
     LedgeGrab ledgeGrab;
-    public bool canClimb;
-
-    public bool facingRight;
-
-    public bool isLedgeHanging;
 
     public Vector3 ledgeClimbPositionOffset;
 
-    //public bool ledgeDetected;
     protected override void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
-        playerLocomotion = GetComponent<PlayerLocomotion>();
         ledgeGrab = GetComponentInChildren<LedgeGrab>();
-        facingRight = false;
-        isLedgeHanging = false;
-        canClimb = false;
         base.Awake();
     }
     protected override void Update()
     {
         inputHandler.TickInput(Time.deltaTime);
 
-        
-
-        if (!isInteracting)
-        {
-            // update animator
-            animator.SetBool("Wall Hang", isLedgeHanging);
-
-            if (isLedgeHanging)
-            {
-                if (facingRight)
-                {
-                    animator.SetFloat("X", 1f);
-                }
-                else
-                {
-                    animator.SetFloat("X", -1f);
-                }
-            }
-            else
-            {
-                animator.SetBool("Grounded", isGrounded);
-                animator.SetBool("Falling", isFalling);
-
-                float movement = body.velocity.x;
-                if (movement == 0f)
-                {
-                    animator.SetBool("Running", false);
-                }
-                else
-                {
-                    animator.SetFloat("X", movement);
-                    animator.SetBool("Running", true);
-                }
-
-                if (inputHandler.horizontal > .01f)
-                {
-                    if (!facingRight)
-                    {
-                        if (isGrounded)
-                        {
-                            animator.SetTrigger("Turn");
-                        }
-
-                        facingRight = true;
-                    }
-                }
-                else if (inputHandler.horizontal < -.01f)
-                {
-                    if (facingRight)
-                    {
-                        if (isGrounded)
-                        {
-                            animator.SetTrigger("Turn");
-                        }
-
-                        facingRight = false;
-                    }
-                }
-            }
-
-            
-        }
+        // update animator
+        HandleAnimator(body.velocity.x);
 
         ledgeGrab.SetDirection(facingRight);
+
         base.Update();
     }
     private void LateUpdate()
@@ -122,6 +52,49 @@ public class PlayerManager : CharacterManager
         }
     }
 
+    public void HandleAnimator(float movement)
+    {
+        if (isInteracting) { return; }
+
+        animator.SetBool("Wall Hang", isLedgeHanging);
+
+        if (isLedgeHanging)
+        {
+            if (facingRight)
+            {
+                animator.SetFloat("X", 1f);
+            }
+            else
+            {
+                animator.SetFloat("X", -1f);
+            }
+        }
+        else
+        {
+            animator.SetBool("Grounded", isGrounded);
+            animator.SetBool("Falling", isFalling);
+            animator.SetBool("Running", (movement != 0f));
+            
+
+            if (movement > .01f)
+            {
+                animator.SetFloat("X", movement);
+                if (!facingRight && isGrounded)
+                {
+                    animator.SetTrigger("Turn");
+                }
+            }
+            else if (movement < -.01f)
+            {
+                animator.SetFloat("X", movement);
+                if (facingRight && isGrounded)
+                {
+                    animator.SetTrigger("Turn");
+                }
+            }
+        }
+
+    }
     public void PlayJumpAnimation()
     {
         animator.SetTrigger("Jump");

@@ -4,19 +4,15 @@ using UnityEngine;
 
 public class PlayerLocomotion : MonoBehaviour
 {
-    //Rigidbody2D body;
-    PlayerManager playerManager;
+    private PlayerManager playerManager;
 
     [Header("Movement Variables")]
     public float acceleration;
     public float moveSpeed;
     public float jumpHeight;
-    
-    
 
     private void Awake()
     {
-        //body = GetComponent<Rigidbody2D>();
         playerManager = GetComponent<PlayerManager>();
     }
     private void Update()
@@ -28,6 +24,8 @@ public class PlayerLocomotion : MonoBehaviour
 
     public void HandleMovement(float horizontal)
     {
+        if(playerManager.body.bodyType == RigidbodyType2D.Static) { return; }
+
         if (playerManager.isDead || playerManager.isLedgeHanging) 
         {
             playerManager.body.velocity = Vector2.zero;

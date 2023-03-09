@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class LedgeGrab : MonoBehaviour
 {
+    [Header("Ledge Grab Stats")]
     public float grabRadius;
     public LayerMask groundLayer;
-    PlayerManager player;
+
+    private PlayerManager player;
     private bool canDetect;
     private float dropTimer;
-    public GameObject currentLedge;
+    private GameObject currentLedge;
+
     private void Awake()
     {
         player = GetComponentInParent<PlayerManager>();
