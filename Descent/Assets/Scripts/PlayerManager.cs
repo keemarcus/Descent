@@ -8,11 +8,13 @@ public class PlayerManager : CharacterManager
     LedgeGrab ledgeGrab;
 
     public Vector3 ledgeClimbPositionOffset;
+    public bool isSneaking;
 
     protected override void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         ledgeGrab = GetComponentInChildren<LedgeGrab>();
+        isSneaking = false;
         base.Awake();
     }
     protected override void Update()
