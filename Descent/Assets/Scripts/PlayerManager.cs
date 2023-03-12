@@ -32,6 +32,7 @@ public class PlayerManager : CharacterManager
     {
         // reset all the input values
         inputHandler.jumpInput = false;
+        inputHandler.sneakInput = false;
         inputHandler.useItemInput = false;
     }
     public void HandleUseItem()
@@ -75,7 +76,7 @@ public class PlayerManager : CharacterManager
             animator.SetBool("Grounded", isGrounded);
             animator.SetBool("Falling", isFalling);
             animator.SetBool("Running", (movement != 0f));
-            
+
 
             if (movement > .01f)
             {
@@ -105,6 +106,12 @@ public class PlayerManager : CharacterManager
     {
         canClimb = true;
         if (!isLedgeHanging) { isLedgeHanging = true; }
+    }
+    public void HandleSneak()
+    {
+        isSneaking = !isSneaking;
+        animator.SetBool("Sneaking", isSneaking);
+        animator.SetTrigger("Sneak");
     }
     public void HandleLedgeClimb()
     {

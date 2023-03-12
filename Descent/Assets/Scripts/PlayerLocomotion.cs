@@ -40,6 +40,10 @@ public class PlayerLocomotion : MonoBehaviour
         }
 
         playerManager.body.velocity = new Vector2(horizontal * moveSpeed, playerManager.body.velocity.y);
+        if (playerManager.isSneaking)
+        {
+            playerManager.body.velocity /= 2f;
+        }
     }
 
     public void HandleJump(float delta)

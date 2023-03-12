@@ -20,7 +20,7 @@ public class LedgeGrab : MonoBehaviour
     }
     void Update()
     {
-        if (canDetect && dropTimer <= 0f)
+        if (!player.isSneaking && canDetect && dropTimer <= 0f)
         {
             player.isLedgeHanging = Physics2D.OverlapCircle(this.transform.position, grabRadius, groundLayer);
         }

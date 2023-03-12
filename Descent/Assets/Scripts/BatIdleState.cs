@@ -19,12 +19,8 @@ public class BatIdleState : BatState
         {
             if(batManager.diveTimer <= 0f && (!batManager.player.isSneaking && Vector2.Distance(batManager.transform.position, batManager.player.transform.position) <= batManager.normalDetectionRange) || (batManager.player.isSneaking && Vector2.Distance(batManager.transform.position, batManager.player.transform.position) <= batManager.sneakingDetectionRange))
             {
-                Debug.Log("Player Detected");
-                //diveState.targetPosition = batManager.player.transform.position;
-                //diveState.SetTargetPosition(batManager.player.transform.position);
                 batManager.animator.SetFloat("X", batManager.player.transform.position.x - batManager.transform.position.x);
                 batManager.animator.SetTrigger("Dive");
-                //return this;
                 return diveState;
             }
         }

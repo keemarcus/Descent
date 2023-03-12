@@ -9,6 +9,7 @@ public class InputHandler : MonoBehaviour
     
     public Vector2 movement;
     public bool jumpInput;
+    public bool sneakInput;
     public bool useItemInput;
 
     PlayerControls inputActions;
@@ -29,6 +30,7 @@ public class InputHandler : MonoBehaviour
             inputActions = new PlayerControls();
             inputActions.PlayerMovement.Movement.performed += inputActions => movement = inputActions.ReadValue<Vector2>();
             inputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
+            inputActions.PlayerMovement.Sneak.performed += i => sneakInput = true;
             inputActions.PlayerActions.UseItem.performed += i => useItemInput = true;
         }
 
@@ -39,6 +41,7 @@ public class InputHandler : MonoBehaviour
     {
         HandleMovementInput(delta);
         HandleJumpInput(delta);
+        HandleSneakInput(delta);
         HandleUseItemInput(delta);
     }
     private void HandleUseItemInput(float delta)
@@ -46,6 +49,13 @@ public class InputHandler : MonoBehaviour
         if (useItemInput)
         {
             playerManager.HandleUseItem();
+        }
+    }
+    private void HandleSneakInput(float delta)
+    {
+        if (sneakInput)
+        {
+            playerManager.HandleSneak();
         }
     }
 
@@ -87,7 +97,7 @@ public class InputHandler : MonoBehaviour
 
     private void HandleJumpInput(float delta)
     {
-        if (!playerManager.isGrounded || playerManager.isInteracting) { return; }
+        if (!playerManager.isGrounded || playerManager.isInteracting || playerManager.isSneaking) { return; }
 
         if (jumpInput)
         {
