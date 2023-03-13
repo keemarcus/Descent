@@ -257,6 +257,7 @@ GameObject:
   - component: {fileID: 393107921}
   - component: {fileID: 393107924}
   - component: {fileID: 393107925}
+  - component: {fileID: 393107926}
   m_Layer: 0
   m_Name: Bat Child
   m_TagString: Untagged
@@ -278,6 +279,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalDetectionRange: 5
   sneakingDetectionRange: 2.5
+  damage: 10
   currentState: {fileID: 1497695615}
   diveCooldown: 3
   moveSpeed: 15
@@ -392,6 +394,32 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &393107926
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393107920}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.4}
+  m_EdgeRadius: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1113,6 +1141,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   groundDetectionCastTransform: {fileID: 0}
+  maxHP: 0
+  currentHP: 0
   isTouchingObstacle: 0
   currentState: {fileID: 1524601491}
   dialogueTransform: {fileID: 1927187916}
@@ -1519,7 +1549,7 @@ GameObject:
   - component: {fileID: 1080443382}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1555,6 +1585,7 @@ MonoBehaviour:
   moveAmount: 0
   movement: {x: 0, y: 0}
   jumpInput: 0
+  sneakInput: 0
   useItemInput: 0
 --- !u!61 &1080443376
 BoxCollider2D:
@@ -1717,6 +1748,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   groundDetectionCastTransform: {fileID: 381742032}
+  maxHP: 50
+  currentHP: 50
   ledgeClimbPositionOffset: {x: 0.4, y: 1, z: 0}
   isSneaking: 0
 --- !u!251 &1080443382
@@ -2060,6 +2093,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   groundDetectionCastTransform: {fileID: 0}
+  maxHP: 0
+  currentHP: 0
   isTouchingObstacle: 0
   currentState: {fileID: 763654294}
   dialogueTransform: {fileID: 1106015251}
@@ -3494,7 +3529,7 @@ GameObject:
   - component: {fileID: 1810140565}
   m_Layer: 0
   m_Name: Bat
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3957,8 +3992,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   idleState: {fileID: 1497695615}
-  targetPosition: {x: 0, y: 0}
-  endPosition: {x: 0, y: 0}
 --- !u!4 &2014150503
 Transform:
   m_ObjectHideFlags: 0

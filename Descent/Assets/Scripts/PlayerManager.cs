@@ -44,14 +44,12 @@ public class PlayerManager : CharacterManager
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag.Equals("Enemy"))
-        {
+
             // destroy the player
-            if (!isFalling)
-            {
-                this.isDead = true;
-            }
-        }
+            //if (!isFalling)
+            //{
+                //this.isDead = true;
+            //}
     }
 
     public void HandleAnimator(float movement)

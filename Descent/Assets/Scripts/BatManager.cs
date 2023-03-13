@@ -8,6 +8,8 @@ public class BatManager : MonoBehaviour
     public float normalDetectionRange;
     public float sneakingDetectionRange;
 
+    public float damage;
+
     public BatState currentState;
     public float diveCooldown;
     public float moveSpeed;
@@ -33,7 +35,19 @@ public class BatManager : MonoBehaviour
         }
         currentState = currentState.Tick(this);  
     }
-
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag.Equals("Player"))
+        {
+            // damage the player
+            player.DamageCharacter(this.damage);
+            Debug.Log(player.gameObject.name + " took " + this.damage + " damage from " + this.gameObject.transform.parent.name);
+            if (player.currentHP <= 0f)
+            {
+                player.isDead = true;
+            }
+        }
+    }
     private void OnDrawGizmos()
     {
         // draw detection range gizmo

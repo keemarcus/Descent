@@ -26,6 +26,10 @@ public class CharacterManager : MonoBehaviour
     private float groundedTime;
     private float groundedTimer;
 
+    [Header("Character Stats")]
+    public float maxHP;
+    public float currentHP;
+
     protected virtual void Awake()
     {
         isDead = false;
@@ -51,6 +55,14 @@ public class CharacterManager : MonoBehaviour
 
         // update animator variables
         animator.SetBool("Is Dead", isDead);
+    }
+    public void SetHP(float health)
+    {
+        currentHP = health;
+    }
+    public void DamageCharacter(float incomingDamage)
+    {
+        currentHP = Mathf.Clamp(currentHP - incomingDamage, 0f, maxHP);
     }
     public bool HandleDirection()
     {
