@@ -42,15 +42,6 @@ public class PlayerManager : CharacterManager
             heldItem.Use();
         }
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-
-            // destroy the player
-            //if (!isFalling)
-            //{
-                //this.isDead = true;
-            //}
-    }
 
     public void HandleAnimator(float movement)
     {
@@ -79,7 +70,7 @@ public class PlayerManager : CharacterManager
             if (movement > .01f)
             {
                 animator.SetFloat("X", movement);
-                if (!facingRight && isGrounded)
+                if (!facingRight && isGrounded && !isSneaking)
                 {
                     animator.SetTrigger("Turn");
                 }
@@ -87,7 +78,7 @@ public class PlayerManager : CharacterManager
             else if (movement < -.01f)
             {
                 animator.SetFloat("X", movement);
-                if (facingRight && isGrounded)
+                if (facingRight && isGrounded && !isSneaking)
                 {
                     animator.SetTrigger("Turn");
                 }
