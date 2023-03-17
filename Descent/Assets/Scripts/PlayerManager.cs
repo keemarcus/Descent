@@ -9,12 +9,14 @@ public class PlayerManager : CharacterManager
 
     public Vector3 ledgeClimbPositionOffset;
     public bool isSneaking;
+    public bool canCombo;
 
     protected override void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
         ledgeGrab = GetComponentInChildren<LedgeGrab>();
         isSneaking = false;
+        canCombo = false;
         base.Awake();
     }
     protected override void Update()
@@ -25,7 +27,7 @@ public class PlayerManager : CharacterManager
         HandleAnimator(body.velocity.x);
 
         ledgeGrab.SetDirection(facingRight);
-
+        
         base.Update();
     }
     private void LateUpdate()
@@ -34,6 +36,7 @@ public class PlayerManager : CharacterManager
         inputHandler.jumpInput = false;
         inputHandler.sneakInput = false;
         inputHandler.useItemInput = false;
+        inputHandler.attackInput = false;
     }
     public void HandleUseItem()
     {
@@ -95,6 +98,33 @@ public class PlayerManager : CharacterManager
     {
         canClimb = true;
         if (!isLedgeHanging) { isLedgeHanging = true; }
+    }
+
+    public void SetCanCombo()
+    {
+        canCombo = true;
+    }
+    public void DisableCanCombo()
+    {
+        canCombo = false;
+        //animator.SetBool("Attack Combo", false);
+    }
+    public void HandleAttack()
+    {
+        if (canCombo)
+        {
+            animator.SetBool("Attack Combo", true);
+            return;
+        }
+
+        if (isInteracting || isLedgeHanging || isSneaking || !isGrounded || isDead || isFalling) { return; }
+
+        animator.SetTrigger("Attack");
+    }
+    public void HandleAttackCombo()
+    {
+        if (!canCombo || isInteracting || isLedgeHanging || isSneaking || !isGrounded || isDead || isFalling) { return; }
+        
     }
     public void HandleSneak()
     {

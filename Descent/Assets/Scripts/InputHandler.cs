@@ -11,6 +11,7 @@ public class InputHandler : MonoBehaviour
     public bool jumpInput;
     public bool sneakInput;
     public bool useItemInput;
+    public bool attackInput;
 
     PlayerControls inputActions;
 
@@ -32,6 +33,7 @@ public class InputHandler : MonoBehaviour
             inputActions.PlayerMovement.Jump.performed += i => jumpInput = true;
             inputActions.PlayerMovement.Sneak.performed += i => sneakInput = true;
             inputActions.PlayerActions.UseItem.performed += i => useItemInput = true;
+            inputActions.PlayerActions.Attack.performed += i => attackInput = true;
         }
 
         inputActions.Enable();
@@ -40,9 +42,17 @@ public class InputHandler : MonoBehaviour
     public void TickInput(float delta)
     {
         HandleMovementInput(delta);
+        HandleAttackInput(delta);
         HandleJumpInput(delta);
         HandleSneakInput(delta);
         HandleUseItemInput(delta);
+    }
+    private void HandleAttackInput(float delta)
+    {
+        if (attackInput)
+        {
+            playerManager.HandleAttack();
+        }
     }
     private void HandleUseItemInput(float delta)
     {
