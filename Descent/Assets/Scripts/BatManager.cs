@@ -8,7 +8,11 @@ public class BatManager : MonoBehaviour
     public float normalDetectionRange;
     public float sneakingDetectionRange;
 
+    [Header("Combat Stats")]
+    public float maxHP;
+    public float currentHP;
     public float damage;
+    public bool isDead;
 
     public BatState currentState;
     public float diveCooldown;
@@ -21,6 +25,8 @@ public class BatManager : MonoBehaviour
     public float diveTimer;
     private void Awake()
     {
+        isDead = false;
+
         // look for player
         player = FindObjectOfType<PlayerManager>();
         body = GetComponent<Rigidbody2D>();
@@ -29,11 +35,25 @@ public class BatManager : MonoBehaviour
     }
     private void Update()
     {
+        if (isDead)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+
         if(diveTimer > 0f)
         {
             diveTimer -= Time.deltaTime;
         }
         currentState = currentState.Tick(this);  
+    }
+    public void SetHP(float health)
+    {
+        currentHP = health;
+    }
+    public void DamageCharacter(float incomingDamage)
+    {
+        currentHP = Mathf.Clamp(currentHP - incomingDamage, 0f, maxHP);
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

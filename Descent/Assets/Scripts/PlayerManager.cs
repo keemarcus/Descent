@@ -11,6 +11,8 @@ public class PlayerManager : CharacterManager
     public bool isSneaking;
     public bool canCombo;
 
+    public GameObject weaponCollider;
+
     protected override void Awake()
     {
         inputHandler = GetComponent<InputHandler>();
@@ -108,6 +110,14 @@ public class PlayerManager : CharacterManager
     {
         canCombo = false;
         //animator.SetBool("Attack Combo", false);
+    }
+    public void EnableWeaponCollider()
+    {
+        weaponCollider.SetActive(true);
+    }
+    public void DisableWeaponCollider()
+    {
+        weaponCollider.SetActive(false);
     }
     public void HandleAttack()
     {
