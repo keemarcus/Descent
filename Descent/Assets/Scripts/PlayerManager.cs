@@ -19,6 +19,7 @@ public class PlayerManager : CharacterManager
         ledgeGrab = GetComponentInChildren<LedgeGrab>();
         isSneaking = false;
         canCombo = false;
+        weaponCollider.SetActive(false);
         base.Awake();
     }
     protected override void Update()
