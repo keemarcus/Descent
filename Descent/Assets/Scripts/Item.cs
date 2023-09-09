@@ -7,6 +7,8 @@ public abstract class Item : MonoBehaviour
     public CharacterManager holder;
     public BoxCollider2D physicsCollider;
     public BoxCollider2D triggerCollider;
+
+    public Sprite icon;
     private void Awake()
     {
         BoxCollider2D [] colliders = GetComponents<BoxCollider2D>();
@@ -21,6 +23,8 @@ public abstract class Item : MonoBehaviour
                 triggerCollider = collider;
             }
         }
+
+        icon = GetComponent<SpriteRenderer>().sprite;
     }
     public abstract void Use();
 
@@ -44,6 +48,24 @@ public abstract class Item : MonoBehaviour
     public void Pickup(Collider2D character)
     {
         PlayerManager player = character.GetComponent<PlayerManager>();
+        if (player != null)
+        {
+            if(player.heldItem == this) { return; }
+            if (player.playerInventory.CheckForOpenSlot())
+            {
+                player.playerInventory.PickUpItem(this);
+                physicsCollider.enabled = false;
+                this.holder = player;
+                this.gameObject.SetActive(false);
+            }
+            else
+            {
+
+            }
+            
+        }
+        return;
+
         if (player != null && player.heldItem == null)
         {
             physicsCollider.enabled = false;

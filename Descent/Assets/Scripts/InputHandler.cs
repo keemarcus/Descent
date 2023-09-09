@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Composites;
 
 public class InputHandler : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class InputHandler : MonoBehaviour
     public bool sneakInput;
     public bool useItemInput;
     public bool attackInput;
+    public float selectItemInput;
 
     PlayerControls inputActions;
 
@@ -34,6 +37,7 @@ public class InputHandler : MonoBehaviour
             inputActions.PlayerMovement.Sneak.performed += i => sneakInput = true;
             inputActions.PlayerActions.UseItem.performed += i => useItemInput = true;
             inputActions.PlayerActions.Attack.performed += i => attackInput = true;
+            inputActions.PlayerActions.SelectItem.performed += inputActions => selectItemInput = inputActions.ReadValue<float>();
         }
 
         inputActions.Enable();
@@ -46,6 +50,7 @@ public class InputHandler : MonoBehaviour
         HandleJumpInput(delta);
         HandleSneakInput(delta);
         HandleUseItemInput(delta);
+        HandleSelectItemInput(delta);
     }
     private void HandleAttackInput(float delta)
     {
@@ -113,5 +118,12 @@ public class InputHandler : MonoBehaviour
         {
             playerLocomotion.HandleJump(delta);
         }
+    }
+
+    private void HandleSelectItemInput(float delta)
+    {
+        //Debug.Log(selectItemInput);
+        if(selectItemInput > 0) { playerManager.playerInventory.SelectItem(1); }
+        else if (selectItemInput < 0) { playerManager.playerInventory.SelectItem(-1); }
     }
 }

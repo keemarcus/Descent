@@ -230,6 +230,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Select Item"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""8f42368c-73c9-4dab-b31b-2b03914867cd"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -287,6 +295,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""b1fa5c21-0218-4836-917c-5c016c40c8eb"",
+                    ""path"": ""1DAxis(whichSideWins=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Item"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""4b336d8e-0e1b-4a2e-8853-508155cb7943"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""2cde68b7-8cde-4bd5-8628-d59aaabadbbb"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Select Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -302,6 +343,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerActions = asset.FindActionMap("Player Actions", throwIfNotFound: true);
         m_PlayerActions_UseItem = m_PlayerActions.FindAction("Use Item", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
+        m_PlayerActions_SelectItem = m_PlayerActions.FindAction("Select Item", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -402,12 +444,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private IPlayerActionsActions m_PlayerActionsActionsCallbackInterface;
     private readonly InputAction m_PlayerActions_UseItem;
     private readonly InputAction m_PlayerActions_Attack;
+    private readonly InputAction m_PlayerActions_SelectItem;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerActionsActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @UseItem => m_Wrapper.m_PlayerActions_UseItem;
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
+        public InputAction @SelectItem => m_Wrapper.m_PlayerActions_SelectItem;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -423,6 +467,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnAttack;
+                @SelectItem.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSelectItem;
+                @SelectItem.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSelectItem;
+                @SelectItem.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSelectItem;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -433,6 +480,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @SelectItem.started += instance.OnSelectItem;
+                @SelectItem.performed += instance.OnSelectItem;
+                @SelectItem.canceled += instance.OnSelectItem;
             }
         }
     }
@@ -447,5 +497,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     {
         void OnUseItem(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnSelectItem(InputAction.CallbackContext context);
     }
 }

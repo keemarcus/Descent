@@ -13,6 +13,7 @@ public class PlayerManager : CharacterManager
     public bool canCombo;
 
     public GameObject weaponCollider;
+    public PlayerInventory playerInventory;
 
     protected override void Awake()
     {
@@ -22,6 +23,11 @@ public class PlayerManager : CharacterManager
         canCombo = false;
         weaponCollider.SetActive(false);
         base.Awake();
+        if (flashlightTransform != null)
+        {
+            if (facingRight) { flashlightTransform.eulerAngles = new Vector3(0f, 0f, 0f); }
+            else { flashlightTransform.eulerAngles = new Vector3(0f, 180f, 0f); }
+        }
     }
     protected override void Update()
     {
@@ -48,12 +54,10 @@ public class PlayerManager : CharacterManager
             if(flashlightTransform.rotation.eulerAngles.y == 180f || flashlightTransform.rotation.eulerAngles.y == 0f) { return; }
             if (flashlightTransform.rotation.eulerAngles.y <= 80f)
             {
-                Debug.Log("right");
                 flashlightTransform.eulerAngles = new Vector3(0f, 0f, 0f);
             }
             else if (flashlightTransform.rotation.eulerAngles.y >= 100f)
             {
-                Debug.Log("left");
                 flashlightTransform.eulerAngles = new Vector3(0f, 180f, 0f);
             }
         }
