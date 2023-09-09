@@ -9,6 +9,7 @@ public class CharacterManager : MonoBehaviour
     public Item heldItem;
     public Transform heldItemTransform;
     protected Animator animator;
+    public Transform flashlightTransform;
 
     [Header("Character State Bools")]
     public bool isDead;

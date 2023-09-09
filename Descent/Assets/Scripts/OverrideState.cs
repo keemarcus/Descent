@@ -19,6 +19,6 @@ public class OverrideState : StateMachineBehaviour
         if (character != null)
         {
             character.isInteracting = false;
-        }
+        } 
     }
 }

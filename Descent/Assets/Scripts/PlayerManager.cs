@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class PlayerManager : CharacterManager
@@ -40,6 +41,22 @@ public class PlayerManager : CharacterManager
         inputHandler.sneakInput = false;
         inputHandler.useItemInput = false;
         inputHandler.attackInput = false;
+
+        // make sure flashlight is turned around completely
+        if (flashlightTransform != null)
+        {
+            if(flashlightTransform.rotation.eulerAngles.y == 180f || flashlightTransform.rotation.eulerAngles.y == 0f) { return; }
+            if (flashlightTransform.rotation.eulerAngles.y <= 80f)
+            {
+                Debug.Log("right");
+                flashlightTransform.eulerAngles = new Vector3(0f, 0f, 0f);
+            }
+            else if (flashlightTransform.rotation.eulerAngles.y >= 100f)
+            {
+                Debug.Log("left");
+                flashlightTransform.eulerAngles = new Vector3(0f, 180f, 0f);
+            }
+        }
     }
     public void HandleUseItem()
     {
