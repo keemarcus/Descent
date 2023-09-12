@@ -15,6 +15,7 @@ public class InputHandler : MonoBehaviour
     public bool useItemInput;
     public bool attackInput;
     public float selectItemInput;
+    public bool dropItemInput;
 
     PlayerControls inputActions;
 
@@ -38,6 +39,7 @@ public class InputHandler : MonoBehaviour
             inputActions.PlayerActions.UseItem.performed += i => useItemInput = true;
             inputActions.PlayerActions.Attack.performed += i => attackInput = true;
             inputActions.PlayerActions.SelectItem.performed += inputActions => selectItemInput = inputActions.ReadValue<float>();
+            inputActions.PlayerActions.DropItem.performed += i => dropItemInput = true;
         }
 
         inputActions.Enable();
@@ -51,6 +53,7 @@ public class InputHandler : MonoBehaviour
         HandleSneakInput(delta);
         HandleUseItemInput(delta);
         HandleSelectItemInput(delta);
+        HandleDropItemInput(delta);
     }
     private void HandleAttackInput(float delta)
     {
@@ -125,5 +128,13 @@ public class InputHandler : MonoBehaviour
         //Debug.Log(selectItemInput);
         if(selectItemInput > 0) { playerManager.playerInventory.SelectItem(1); }
         else if (selectItemInput < 0) { playerManager.playerInventory.SelectItem(-1); }
+    }
+
+    private void HandleDropItemInput(float delta)
+    {
+        if (dropItemInput)
+        {
+            playerManager.HandleDropItem();
+        }
     }
 }

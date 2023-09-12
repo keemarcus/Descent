@@ -50,13 +50,13 @@ public abstract class Item : MonoBehaviour
         PlayerManager player = character.GetComponent<PlayerManager>();
         if (player != null)
         {
-            if(player.heldItem == this) { return; }
+            if(player.playerInventory.CheckForItemInInventory(this)) { return; }
             if (player.playerInventory.CheckForOpenSlot())
             {
-                player.playerInventory.PickUpItem(this);
                 physicsCollider.enabled = false;
                 this.holder = player;
                 this.gameObject.SetActive(false);
+                player.playerInventory.PickUpItem(this);
             }
             else
             {
@@ -87,6 +87,7 @@ public abstract class Item : MonoBehaviour
 
     public void Drop()
     {
+        Debug.Log("Dropping: " +  this.gameObject.name);
         this.GetComponent<Rigidbody2D>().AddForce(Vector2.up * 10f);
         this.GetComponent<SpriteRenderer>().enabled = true;
         physicsCollider.enabled = true;

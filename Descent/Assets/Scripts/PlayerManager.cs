@@ -47,6 +47,8 @@ public class PlayerManager : CharacterManager
         inputHandler.sneakInput = false;
         inputHandler.useItemInput = false;
         inputHandler.attackInput = false;
+        inputHandler.dropItemInput = false;
+        inputHandler.selectItemInput = 0f;
 
         // make sure flashlight is turned around completely
         if (flashlightTransform != null)
@@ -67,6 +69,14 @@ public class PlayerManager : CharacterManager
         if (heldItem != null)
         {
             heldItem.Use();
+        }
+    }
+
+    public void HandleDropItem()
+    {
+        if (heldItem != null) 
+        {
+            playerInventory.DropItem(heldItem);  
         }
     }
 

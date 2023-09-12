@@ -238,6 +238,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Drop Item"",
+                    ""type"": ""Button"",
+                    ""id"": ""3f66ec8e-55ca-43fa-b0d1-587a7f53f5ee"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -328,6 +336,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Select Item"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1dc4ddaa-0e48-4bfa-8cf2-d2f5d3573be1"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Drop Item"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -344,6 +363,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_PlayerActions_UseItem = m_PlayerActions.FindAction("Use Item", throwIfNotFound: true);
         m_PlayerActions_Attack = m_PlayerActions.FindAction("Attack", throwIfNotFound: true);
         m_PlayerActions_SelectItem = m_PlayerActions.FindAction("Select Item", throwIfNotFound: true);
+        m_PlayerActions_DropItem = m_PlayerActions.FindAction("Drop Item", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -445,6 +465,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerActions_UseItem;
     private readonly InputAction m_PlayerActions_Attack;
     private readonly InputAction m_PlayerActions_SelectItem;
+    private readonly InputAction m_PlayerActions_DropItem;
     public struct PlayerActionsActions
     {
         private @PlayerControls m_Wrapper;
@@ -452,6 +473,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @UseItem => m_Wrapper.m_PlayerActions_UseItem;
         public InputAction @Attack => m_Wrapper.m_PlayerActions_Attack;
         public InputAction @SelectItem => m_Wrapper.m_PlayerActions_SelectItem;
+        public InputAction @DropItem => m_Wrapper.m_PlayerActions_DropItem;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActions; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -470,6 +492,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SelectItem.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSelectItem;
                 @SelectItem.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSelectItem;
                 @SelectItem.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnSelectItem;
+                @DropItem.started -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDropItem;
+                @DropItem.performed -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDropItem;
+                @DropItem.canceled -= m_Wrapper.m_PlayerActionsActionsCallbackInterface.OnDropItem;
             }
             m_Wrapper.m_PlayerActionsActionsCallbackInterface = instance;
             if (instance != null)
@@ -483,6 +508,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @SelectItem.started += instance.OnSelectItem;
                 @SelectItem.performed += instance.OnSelectItem;
                 @SelectItem.canceled += instance.OnSelectItem;
+                @DropItem.started += instance.OnDropItem;
+                @DropItem.performed += instance.OnDropItem;
+                @DropItem.canceled += instance.OnDropItem;
             }
         }
     }
@@ -498,5 +526,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnUseItem(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnSelectItem(InputAction.CallbackContext context);
+        void OnDropItem(InputAction.CallbackContext context);
     }
 }

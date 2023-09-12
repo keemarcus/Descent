@@ -225,6 +225,14 @@
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Drop Item",
+                    "type": "Button",
+                    "id": "3f66ec8e-55ca-43fa-b0d1-587a7f53f5ee",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
                 }
             ],
             "bindings": [
@@ -315,6 +323,17 @@
                     "action": "Select Item",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "1dc4ddaa-0e48-4bfa-8cf2-d2f5d3573be1",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Drop Item",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

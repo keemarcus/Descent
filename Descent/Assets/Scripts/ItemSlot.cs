@@ -49,4 +49,15 @@ public class ItemSlot : MonoBehaviour
 
         // handle quantity later
     }
+
+    public void RemoveItem()
+    {
+        if (item != null)
+        {
+            item = null;
+            itemIcon.sprite = null;
+            itemIcon.enabled = false;
+            itemNameText.text = null;
+        }
+    }
 }
